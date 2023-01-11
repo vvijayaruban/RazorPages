@@ -1,0 +1,78 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<style>
+    table.customTable {
+        width: 100%;
+        background-color: #FFFFFF;
+        border-collapse: collapse;
+        border-width: 2px;
+        border-color: #CCCCCC;
+        border-style: solid;
+        color: #000000;
+    }
+
+    table.customTable td, table.customTable th {
+        border-width: 2px;
+        border-color: #CCCCCC;
+        border-style: solid;
+        padding: 5px;
+    }
+
+    table.customTable thead {
+        background-color: #CCCCCC;
+    }
+</style>
+
+<div class="text-center">
+    <h1 class="display-4">Expense Claims</h1>
+</div>
+<div>
+    <p>Tackle some of these, but please limit yourself to two hours. You will have the opportunity to explain how you would improve on your solution given more time.</p>
+    <ul>
+        <li>Using DataService, load data from data.csv into the table</li>
+        <li>Change DataService as required to support features below</li>
+        <li>Show 20 records per page</li>
+        <li>Allow filtering by category, claimant and office</li>
+        <li>Write unit tests</li>
+    </ul>
+
+    <!-- HTML Code: Place this code in the document's body (between the <body> tags) where the table should appear -->
+    <form method="post">
+    <div>
+            <input type="text" asp-for="PageFilter.Term" /><input type="submit" asp-page-handler="Filter" value="Filter" />
+    </div>
+    <table class="customTable">
+        <thead>
+            <tr>
+                <th>Claimant</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Office</th>
+                <th>Category</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var claim in Model.PageFilter.Results)
+        {
+            <tr>
+                        <td>@claim.Claimant</td>
+                        <td>@claim.Description</td>
+                        <td>@claim.Amount</td>
+                        <td>@claim.Office</td>
+                        <td>@claim.Category</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+        <button asp-page-handler="PreviousClick" >Previous</button>
+        <input type="hidden" asp-for="PageFilter.PageIndex"/>
+        <label>@(Model.PageFilter.PageIndex + 1)</label>
+        <label>of</label>
+        <label>@Model.PageFilter.PageSize</label>
+        <button asp-page-handler="NextClick">Next</button>
+    </form>
+</div>
